@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style type="text/css">
+        article {
+            position: relative;
+            width: 1024px;
+            height: 768px;
+            background-image: url("./images/fond.png");
+            background-size: 100% 100%;
+            overflow: hidden;
+        }
+
+        article #photo {
+            position: absolute;
+            bottom: 0px;
+            left: -200px;
+            height: 700px;
+        }
+
+        article h1 {
+            position: absolute;
+            font-family: 'Bebas Neue', cursive;
+            top: 20px;
+            right: 20px;
+            font-size: 150px;
+            color: white;
+            z-index: 1;
+            text-align: right;
+            margin: 0;
+            line-height: 0.95em;
+        }
+
+        #score {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 50px;
+            color: white;
+            width: 350px;
+        }
+
+        #score p {
+            margin: 0;
+        }
+
+        #score span {
+            display: block;
+            padding: 0;
+            margin: 0;
+            line-height: 0.8em;
+            filter: drop-shadow(0 0 20px black);
+        }
+
+        #checkboxes {
+            display: flex;
+            font-size: 30px;
+            justify-content: space-between;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        article #credit {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            color: white;
+            font-family: 'Tahoma', sans-serif;
+            filter: drop-shadow(0 0 2px black);
+        }
+
+        #liste {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #liste li {
+            text-align: right;
+            font-family: 'Bebas Neue', cursive;
+            list-style-type: none;
+        }
+
+        #liste a {
+            color: black;
+            text-decoration: none;
+            font-size: 30px;
+        }
+
+        #liste a:hover {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+{% if candidat %}
+<article>
+    <h1>{{ candidat.getNom()|raw }}</h1>
+    <img id="photo" src="./images/{{ candidat.slug }}.png">
+    <div id="score">
+        <p>
+            <span>Score #Loopillault</span>
+            <span>{{ candidat.getScore() }}/7</span>
+        </p>
+        <ul id="checkboxes">
+            {% for point in candidat.getPoints() %}
+                {% if point.hasPoint %}
+                    <li>✅</li>
+                {% else %}
+                    <li>❌</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if candidat.credit %}
+    <div id="credit">
+        Photo : {{ candidat.credit }}
+    </div>
+    {% endif %}
+</article>
+{% endif %}
+
+<ul id="liste">
+    {% for candidat in candidats %}
+        <li><a href="?candidat={{ candidat.slug }}">{{ candidat.nom }} ({{ candidat.getScore() }}/7)</a></li>
+    {% endfor %}
+</ul>
+
+    <!-- loading and running fitty -->
+    <script src="fitty.min.js"></script>
+    <script>
+
+      // fit all demos
+      fitty('#score span', {
+        minSize:1
+      });
+
+    </script>
+</body>
+</html>
